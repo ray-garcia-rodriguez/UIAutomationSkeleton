@@ -1,8 +1,11 @@
 package org.rodriguez.uiautomation.stepDefinition;
 
 import io.cucumber.java.After;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.rodriguez.uiautomation.DriverFactory;
 import org.rodriguez.uiautomation.pageObject.base.BasePage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +29,10 @@ public class Cart {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown(Scenario scenario) {
+        if (scenario.isFailed())
+            scenario.embed(((TakesScreenshot)driverFactory.getDriver())
+                    .getScreenshotAs(OutputType.BYTES),"image/png", scenario.getName());
         driverFactory.getDriver().close();
     }
 }
