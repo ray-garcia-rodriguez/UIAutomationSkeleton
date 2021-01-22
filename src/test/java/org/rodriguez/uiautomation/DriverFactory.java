@@ -21,7 +21,7 @@ public class DriverFactory {
     private Boolean isHeadless;
 
     @Autowired
-    public DriverFactory (String driverType, String browserType, String chrmDrvrLoc, Boolean isHeadless) {
+    public DriverFactory (String driverType, String browserType, Boolean isHeadless) {
         this.chrmDrvrLoc = chrmDrvrLoc;
         this.isHeadless = isHeadless;
 
@@ -48,8 +48,6 @@ public class DriverFactory {
     }
 
     private WebDriver getChromeDriver() {
-        System.setProperty("webdriver.chrome.driver", chrmDrvrLoc);
-
         ChromeOptions options = new ChromeOptions();
 
         if (isHeadless)

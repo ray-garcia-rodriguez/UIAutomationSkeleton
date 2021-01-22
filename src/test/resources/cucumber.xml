@@ -19,7 +19,6 @@
     <bean id="driverFactory" class="org.rodriguez.uiautomation.DriverFactory">
         <constructor-arg value="${driverType}"/>
         <constructor-arg value="${browser}"/>
-        <constructor-arg value="${chrmDrvrLoc}"/>
         <constructor-arg value="${headless}"/>
     </bean>
 
