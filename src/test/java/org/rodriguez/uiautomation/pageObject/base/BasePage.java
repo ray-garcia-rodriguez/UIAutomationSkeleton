@@ -19,34 +19,27 @@ import java.util.stream.Collectors;
 public class BasePage {
     private static Logger log = LogManager.getLogger(BasePage.class);
 
-    private By productItemBy = By.className("product");
-    private By closeDialogBtn = By.className("close-dialog");
-
     @Autowired
     private DriverFactory driverFactory;
     @Value("${baseUrl}")
     String baseUrl;
+    @Autowired
+    private NavBar navBar;
+
+    private final By prflLnkBtnBy = By.id("Header_GlobalLogin_signInQuickLink");
 
     public void getLanding() {
         driverFactory.getDriver().get(baseUrl);
-        closeWelcomeDialog();
     }
 
-    private void closeWelcomeDialog() {
+    public void landed() {
         new FluentWait<>(driverFactory.getDriver())
                 .withTimeout(Duration.ofSeconds(10))
-                .pollingEvery(Duration.ofSeconds(1))
-                .ignoring(NoSuchElementException.class)
-                .until(ExpectedConditions.elementToBeClickable(closeDialogBtn)).click();
+                .pollingEvery(Duration.ofMillis(500))
+                .until(ExpectedConditions.visibilityOfElementLocated(prflLnkBtnBy));
     }
 
-    public void openFirstProductItem() {
-        List<ProductItem> productItems = new FluentWait<>(driverFactory.getDriver())
-                .withTimeout(Duration.ofSeconds(10))
-                .pollingEvery(Duration.ofSeconds(1))
-                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(productItemBy))
-                .stream().map(x -> new ProductItem(x, driverFactory)).collect(Collectors.toList());
-
-        productItems.get(0).open();
+    public void navigateTo(String navBarItemType, String navBarSubItemType) {
+        navBar.navigateTo(navBarItemType, navBarSubItemType);
     }
 }

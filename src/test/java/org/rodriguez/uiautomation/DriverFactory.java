@@ -17,12 +17,10 @@ public class DriverFactory {
     static Logger log = LogManager.getLogger(DriverFactory.class);
 
     private WebDriver webDriver;
-    private String chrmDrvrLoc;
     private Boolean isHeadless;
 
     @Autowired
     public DriverFactory (String driverType, String browserType, Boolean isHeadless) {
-        this.chrmDrvrLoc = chrmDrvrLoc;
         this.isHeadless = isHeadless;
 
         switch (DriverType.valueOf(driverType)) {
