@@ -2,6 +2,7 @@ package org.rodriguez.uiautomation;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -18,6 +19,7 @@ public class DriverFactory {
 
     private WebDriver webDriver;
     private Boolean isHeadless;
+    private Boolean proxy = Boolean.parseBoolean(System.getProperty("proxy"));
 
     @Autowired
     public DriverFactory (String driverType, String browserType, Boolean isHeadless) {
@@ -57,6 +59,14 @@ public class DriverFactory {
         options.addArguments("--disable-gpu"); // applicable to windows os only
         options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
         options.addArguments("--no-sandbox"); // Bypass OS security model
+        options.addArguments("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36");
+
+        if (proxy) {
+            Proxy proxy = new Proxy();
+            proxy.setHttpProxy("localhost"+":"+8080);
+            proxy.setSslProxy("localhost"+":"+8080);
+            options.setCapability("proxy", proxy);
+        }
 
         return new ChromeDriver(options);
     }

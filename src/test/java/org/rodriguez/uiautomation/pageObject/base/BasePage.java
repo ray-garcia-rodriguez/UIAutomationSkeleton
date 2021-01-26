@@ -22,7 +22,7 @@ public class BasePage {
     @Autowired
     private DriverFactory driverFactory;
     @Value("${baseUrl}")
-    String baseUrl;
+    private String baseUrl;
     @Autowired
     private NavBar navBar;
 
@@ -30,9 +30,10 @@ public class BasePage {
 
     public void getLanding() {
         driverFactory.getDriver().get(baseUrl);
+        landed();
     }
 
-    public void landed() {
+    private void landed() {
         new FluentWait<>(driverFactory.getDriver())
                 .withTimeout(Duration.ofSeconds(10))
                 .pollingEvery(Duration.ofMillis(500))
